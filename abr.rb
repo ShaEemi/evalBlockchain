@@ -8,7 +8,7 @@ class ABR
         @droite = nil
         @hashIntern = hashData(data)
     end
-    # fonction de hashage en SHA2 parce que plus lent que SHA1
+    # fonction de hashage en SHA2 parce que plus lent que SHA1 -> difficulty
     def hashData(dataExtern)
 		Digest::SHA2.digest(dataExtern)
     end
