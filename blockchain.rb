@@ -185,23 +185,7 @@ end
 ex = Blockchain.new("message", 1)
 a = Block.new("1er bloc")
 b = Block.new("2eme bloc")
-c = Block.new("3eme bloc")
-d = Block.new("3eme bloc")
-e = Block.new("3eme bloc")
-f = Block.new("3eme bloc")
-g = Block.new("3eme bloc")
-h = Block.new("3eme bloc")
-j = Block.new("3eme bloc")
-
-
 
 ex.main(a)
 ex.main(b)
-ex.main(c)
-ex.main(d)
-ex.main(e)
-ex.main(f)
-ex.main(g)
-ex.main(h)
-ex.main(j)
 
