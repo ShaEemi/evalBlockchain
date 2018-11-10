@@ -1,7 +1,7 @@
 # Evaluation Blockchain
 Ce code a été réalisé pour un devoir d'école : réaliser une blockchain avec une notion de difficulté et une fonction checksum
 ## Explication du code
-1. j'inisialize 3 Class : Block, Blockchain et ABR
+J'initializse trois Class : Block, Blockchain et ABR
 ### Block
 Class Block contient une data, une emprunte, un previousHash, un temps et un index
 ### Blockchain
@@ -21,4 +21,4 @@ Class Arbre binaire de recherche est utilisé dans ce devoir uniquement pour cr�
 
 ## Réalisation
 @ShaEemi
-November 2018
+> November 2018
