@@ -12,13 +12,12 @@ class Blockchain
         @next = nil
         @previous = nil
         @difficulty = difficult
-        @nonce = 0
+        @nonce = "0"
     end
     
     def main(bloc)
         # j'inisialise mon bloc()
         @block = bloc
-        puts "verif nonce : #{@nonce}"
         # je récupère le dernier bloc de la chaine
         last_block = getLast()
         if  @first == nil 
@@ -51,35 +50,47 @@ class Blockchain
     
     # fonction difineDifficulty en fonction dun arbre binome de recherche
     def defineDifficulty(difficulty, nonce, block)
-        abr = ABR.new(difficulty)
-        abr.insert(nonce)
+        abr = ABR.new(nonce)
+        # abr.insert(nonce)
         # puts "abr:  #{abr.hashIntern}"
         # puts "noeud: #{abr.noeudHash}"
-        hash_diff = abr.hashIntern.to_i
-        hash_nonce = abr.noeudHash.to_i
-        checksum(hash_diff, hash_nonce , @nonce, difficulty, block)
+        hash_diff = abr.hashIntern
+        if hash_diff < 0
+            hash_diff = -hash_diff
+        else
+            hash_diff
+        end
+        checksum(hash_diff, @nonce, difficulty, block)
     end
 
     # function checksum 
-    def checksum(hash_diff, hash_nonce, nonce, difficult, block)
+    def checksum(hash_diff, nonce, difficult, block)
         diff_s = hash_diff.to_s
         valeur = diff_s.slice(0,difficult)
-        hexa_val = valeur.to_i(16)
-        puts "hexa val: #{hexa_val}"
-        nonce_s = hash_nonce.to_s
+        # puts "valeur: #{valeur}"
+        hexa_val = bin_to_hex(valeur)
+        # puts "hexa val: #{hexa_val}"
+
+        nonce_s = nonce*difficult
         target = nonce_s.slice(0,difficult)
-        hexa_target = target.to_i(16)
-        puts "hexa target : #{hexa_target}"
+        # puts "target: #{target}"
+        hexa_target = bin_to_hex(target)
+        # puts "hexa target : #{hexa_target}"
+            
 
         if hexa_target == hexa_val
             puts "checksum correct"
-            calculateHash(hexa_val, block)
-        else 
-            nonce = nonce++
-            @nonce = nonce
+            calculateHash(nonce, block)
+        else
+            new_once = @nonce.to_i + 1 
+            @nonce = new_once.to_s
             defineDifficulty(difficult, nonce, block)
         end
     end
+
+    def bin_to_hex(s)
+        s.each_byte.map { |b| b.to_s(16) }.join
+      end
     
     # une fonction calculateHash()
     def calculateHash(diff, block)
@@ -98,7 +109,7 @@ class Blockchain
         end
         
         @block.blockHash = somme.hash
-        puts "mine terminer: #{@block.blockHash}"
+        puts "mine terminer du block: #{@block.index}"
     end
     
     # fonction pour convertire une date en miliseconde
@@ -119,7 +130,7 @@ class Blockchain
         puts "duree #{duree}"
         
         
-        if duree < 3000
+        if duree < 6
             @difficulty = difficulty.to_i + 1
         else
             @difficulty = difficulty.to_i - 1
@@ -130,9 +141,9 @@ class Blockchain
     def isValid(block)
         # verif si le previoushash du block est egal au hash de previous
         # si précedent est nul alors c'est block0
-        if @previous.nil? && @first.nil?
+        if @first == nil
             true
-        elsif @previous.previousHash == block.blockHash
+        elsif @previous.blockHash == block.previousHash
             true
         else
             false
@@ -145,7 +156,7 @@ class Blockchain
     def addBlock(new_block)
         puts "block #{new_block.index} en cours d'ajout"
         mineBlock(@difficulty, new_block)
-        # bloc = self 
+        @nonce = "0"
         # ajout seulement si block valid
         valid = isValid(new_block)
         if valid == true
@@ -171,7 +182,7 @@ class Blockchain
     end
 end
 
-ex = Blockchain.new("message", 2)
+ex = Blockchain.new("message", 1)
 a = Block.new("1er bloc")
 b = Block.new("2eme bloc")
 c = Block.new("3eme bloc")
@@ -187,10 +198,10 @@ j = Block.new("3eme bloc")
 ex.main(a)
 ex.main(b)
 ex.main(c)
-# ex.main(d)
-# ex.main(e)
-# ex.main(f)
-# ex.main(g)
-# ex.main(h)
-# ex.main(j)
+ex.main(d)
+ex.main(e)
+ex.main(f)
+ex.main(g)
+ex.main(h)
+ex.main(j)
 
