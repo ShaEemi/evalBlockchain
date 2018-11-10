@@ -50,11 +50,11 @@ class Blockchain
     
     # fonction difineDifficulty en fonction dun arbre binome de recherche
     def defineDifficulty(difficulty, nonce, block)
-        abr = ABR.new(nonce)
-        # abr.insert(nonce)
+        abr = ABR.new(difficulty)
+        abr.insert(nonce)
         # puts "abr:  #{abr.hashIntern}"
         # puts "noeud: #{abr.noeudHash}"
-        hash_diff = abr.hashIntern
+        hash_diff = abr.noeudHash
         if hash_diff < 0
             hash_diff = -hash_diff
         else
@@ -141,7 +141,7 @@ class Blockchain
     def isValid(block)
         # verif si le previoushash du block est egal au hash de previous
         # si précedent est nul alors c'est block0
-        if @first == nil
+        if @first == block
             true
         elsif @previous.blockHash == block.previousHash
             true
@@ -182,7 +182,7 @@ class Blockchain
     end
 end
 
-ex = Blockchain.new("message", 1)
+ex = Blockchain.new("message", 2)
 a = Block.new("1er bloc")
 b = Block.new("2eme bloc")
 
